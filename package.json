@@ -1,0 +1,29 @@
+{
+  "license": "UNLICENSED",
+  "main": "./dist/lib.umd.js",
+  "module": "./dist/lib.es.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/lib.es.js",
+      "require": "./dist/lib.umd.js"
+    }
+  },
+  "scripts": {
+    "all": "yarn && yarn build && yarn fix && yarn check:types && yarn test && echo `echo 8J+OiSBEaWQgYWxs | base64 -d`",
+    "build": "rm -rf dist/* && yarn build:lib && yarn build:types",
+    "build:lib": "vite build --config vite.lib.config.js --mode development",
+    "build:types": "tsc --declaration --emitDeclarationOnly -p tsconfig.dist.json --skipLibCheck && tsc-alias -p tsconfig.json && mv dist/index.d.ts dist/lib.umd.d.ts",
+    "check:format": "prettier --check --ignore-path .gitignore .",
+    "check:lint": "eslint --ignore-path .gitignore --no-error-on-unmatched-pattern .; if [ $? -eq 0 ]; then echo 8J+OiSBObyBsaW50IGluIHRoaXMgY29kZSEKCg== | base64 -d; else exit 1; fi",
+    "check:types": "tsc --noEmit -p tsconfig.json; if [ $? -eq 0 ]; then echo 8J+OiSBUeXBlcyBhcmUgZ29vZCEKCg== | base64 -d; else exit 1; fi",
+    "confgen": "npx confgen@latest @lib yarn typescript eslint prettier git codespaces vite react codedocs dist:lib githubActions vitest --name Dokens",
+    "fix": "yarn fix:lint && yarn fix:format",
+    "fix:format": "prettier --write --ignore-path .gitignore .",
+    "fix:lint": "eslint --ignore-path .gitignore --no-error-on-unmatched-pattern . --fix; if [ $? -eq 0 ]; then echo 8J+OiSBObyBsaW50IGluIHRoaXMgY29kZSEKCg== | base64 -d; else exit 1; fi",
+    "test": "vitest run --config vite.test.config.js",
+    "watch:test": "vitest watch --config vite.test.config.js"
+  }
+}
